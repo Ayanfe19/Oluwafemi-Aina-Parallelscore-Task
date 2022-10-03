@@ -1,0 +1,52 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: pyserver
+  labels:
+    app: pyserver
+spec:
+  selector:
+    app: pyserver
+  ports:
+    - port: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: pyserver
+  labels:
+    app: pyserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pyserver
+  template:
+    metadata:
+      labels:
+        app: pyserver
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "pyserver"
+        dapr.io/app-port: "8080"
+    spec:
+      containers:
+      - name: pyserver
+        image: ayanf3d3v/pyserver:0.1
+        ports:
+        - containerPort: 8080
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: pyserver-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: pyserver
+            port: 
+              number: 8080

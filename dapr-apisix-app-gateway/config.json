@@ -1,0 +1,19 @@
+{
+  "nodes": [
+  {
+    "host": "apisix-gateway-dapr",
+    "port": 3500,
+    "weight": 1
+    }
+  ],
+  "retries": 1,
+  "timeout": {
+  "connect": 6,
+  "read": 6,
+  "send": 6
+  },
+  "type": "roundrobin",
+  "scheme": "http",
+  "pass_host": "pass",
+  "name": "apisix-dapr"
+}
